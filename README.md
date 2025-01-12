@@ -38,6 +38,17 @@ reclaim -file=subs.txt -wordlist=external.txt <flags>
 [NO CNAME] sub.example3.com
 ```
 
+## Axiom Support
+
+```
+» cat ~/.axiom/modules/reclaim.json
+
+[{
+        "command":"reclaim -file input -wordlist ~/lists/external.txt | anew output",
+        "ext":"txt"
+}]
+```
+
 ## Disclaimer
 
 This tool is intended for educational and ethical testing purposes only. Unauthorized use against third-party systems is strictly prohibited.
