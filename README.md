@@ -10,6 +10,7 @@ is a Go-based tool to identify potential subdomain takeover vulnerabilities by c
 - **Graceful Shutdown**: Handles interruptions cleanly without leaving hanging goroutines.
 - **Customizable Wordlists**: Allows external service and subdomain inputs via text files.
 - **Concurrency**: Supports multithreading for faster scans.
+- **Wordlist-Based Scanning**: Can define custom wordlists for external services and subdomains, enabling targeted scans.
 
 ## Installation
 
@@ -18,17 +19,19 @@ is a Go-based tool to identify potential subdomain takeover vulnerabilities by c
 
 ## Usage
 
-reclaim -file=subs.txt -wordlist=external.txt <flags>
+`reclaim -file=subs.txt -wordlist=external.txt <flags>`
 
-## Flags
+### Command-Line Arguments
 
-    -file: Path to the file containing subdomains (required).
-    -wordlist: Path to the file containing external services (required).
-    -v: Enable verbose output (optional).
-    -c: Number of concurrent workers (default: 10).
-    -t: Timeout for DNS lookups in seconds (default: 5).
-    -d: Delay between requests in milliseconds (default: 100).
-    -check: Check exploitability of services (optional, experimental).
+| Flag         | Description                                              | Default       |
+|--------------|----------------------------------------------------------|---------------|
+| `-subs`      | File containing subdomains to check                      | Required      |
+| `-external`  | File containing external services to check               | Required      |
+| `-v`         | Enable verbose output                                    | Disabled      |
+| `-c`         | Number of concurrent workers                             | `10`          |
+| `-t`         | Timeout for DNS lookups (in seconds)                     | `5`           |
+| `-d`         | Delay between requests (in milliseconds)                 | `100`         |
+| `-check`     | Validate exploitability of vulnerable services           | Disabled      |
 
 ## Example Output:
 
@@ -37,6 +40,65 @@ reclaim -file=subs.txt -wordlist=external.txt <flags>
 [SAFE] sub.example2.com -> github.io
 [NO CNAME] sub.example3.com
 ```
+
+## Wordlist-Based Scanning
+
+The tool relies on wordlists for:
+
+1. **Subdomains**: A file containing the subdomains to scan.
+2. **External Services**: A file listing external services that could be vulnerable to takeover (e.g., `github.io`, `amazonaws.com`).
+
+### Example Wordlist for External Services (`external.txt`):
+
+```
+s3.amazonaws.com
+github.io
+herokuapp.com
+myshopify.com
+domains.tumblr.com
+wordpress.com
+zendesk.com
+bitbucket.io
+cargo.site
+desk.com
+fastly.net
+ghost.io
+helpscoutdocs.com
+custom.intercom.help
+azurewebsites.net
+readme.io
+surge.sh
+unbouncepages.com
+webflow.io
+wpengine.com
+```
+---
+
+## Comparison to Other Tools
+
+| Feature                      | This Tool              | Other Tools |
+|------------------------------|------------------------|---------------------------------------|
+| **CNAME Detection**          | Yes                    | Yes                                   |
+| **Exploitability Check**     | Yes (`-check` flag)    | Partial or None                       |
+| **Custom External Services** | Yes                    | Limited                               |
+| **Concurrency Control**      | Yes (`-c` flag)        | Yes                                   |
+| **Rate Limiting**            | Yes (`-d` flag)        | Limited                               |
+| **Cross-Platform**           | Yes (Go-based)         | Varies                                |
+
+---
+
+## Enhancements
+
+Planned improvements for future releases:
+
+1. **Integration with APIs**:
+   - Fetch additional subdomain data from third-party services like Shodan.
+2. **Reporting**:
+   - Generate detailed reports in JSON or CSV formats for automation and analysis.
+3. **Advanced Response Analysis**:
+   - Use heuristic-based methods to identify new vulnerable patterns.
+4. **Service-Specific Exploitation**:
+   - Automate exploitation for specific services (e.g., claiming S3 buckets or GitHub Pages).
 
 ## Axiom Support
 
