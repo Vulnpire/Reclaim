@@ -25,8 +25,8 @@ is a Go-based tool to identify potential subdomain takeover vulnerabilities by c
 
 | Flag         | Description                                              | Default       |
 |--------------|----------------------------------------------------------|---------------|
-| `-subs`      | File containing subdomains to check                      | Required      |
-| `-external`  | File containing external services to check               | Required      |
+| `-file`      | File containing subdomains to check                      | Required      |
+| `-wordlist`  | File containing external services to check               | Required      |
 | `-v`         | Enable verbose output                                    | Disabled      |
 | `-c`         | Number of concurrent workers                             | `10`          |
 | `-t`         | Timeout for DNS lookups (in seconds)                     | `5`           |
